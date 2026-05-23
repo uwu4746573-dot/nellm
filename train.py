@@ -173,9 +173,16 @@ def main():
             
             optimizer.zero_grad()
             
+            # Tokenize outside model so DataParallel can scatter tensors correctly
+            tokenizer = model.module.pipeline.encoder.tokenizer if hasattr(model, 'module') else model.pipeline.encoder.tokenizer
+            inputs = tokenizer(
+                list(x_text), 
+                padding=True, 
+                truncation=True, 
+                return_tensors="pt"
+            )
             # Forward pass (automatically utilizes multiple GPUs if DataParallel is used)
-            # x_text is a list/tuple of strings
-            v_t, f_new, halt_logit = model(x_text)
+            v_t, f_new, halt_logit = model(inputs)
             
             # Compute individual losses
             loss_router = criterion_router(v_t, tgt_v_t)
