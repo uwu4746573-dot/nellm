@@ -46,10 +46,11 @@ class LatentEncoderLayer(nn.Module):
                 truncation=True, 
                 return_tensors="pt"
             ).to(device)
-        elif isinstance(inputs, dict):
-            # Move dict inputs to device
+        elif hasattr(inputs, 'items'):
+            # Move dict/BatchEncoding inputs to device
             inputs = {k: v.to(device) for k, v in inputs.items()}
         else:
+            print(f"DEBUG ENCODER INPUT TYPE: {type(inputs)}")
             raise ValueError("Unsupported input type. Please provide string, list of strings, or tokenized dictionary.")
             
         # Pass through the Qwen2 encoder
