@@ -8,6 +8,10 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from src.models.pipeline import NeLLMReasoningPipeline
 
 class NeLLMTrainingWrapper(nn.Module):

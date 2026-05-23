@@ -1,7 +1,7 @@
 {
-  "id": "uchebnick/nellm-latent-router",
-  "title": "NELLM Latent Router Layer",
-  "code_file": "src/models/router.py",
+  "id": "uwu4746573/nellm-latent-reasoning-train",
+  "title": "NeLL-M Latent Reasoning Training",
+  "code_file": "train.py",
   "language": "python",
   "kernel_type": "script",
   "is_private": "true",
