@@ -86,7 +86,7 @@ def main():
     SeqLen = 128     # Context length of cached hidden states
     D_model = 4096   # Original LLM dimension
     D_v = 2048       # Latent reasoning dimension
-    Epochs = 1
+    Epochs = 300     # Increased to run for ~10 minutes
     LearningRate = 1e-4
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
