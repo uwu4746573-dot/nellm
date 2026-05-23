@@ -1,0 +1,322 @@
+[
+    {
+        "id": 0,
+        "name": "Identify Objective",
+        "phase": 1
+    },
+    {
+        "id": 1,
+        "name": "Extract Given Information",
+        "phase": 1
+    },
+    {
+        "id": 2,
+        "name": "Identify Constraints",
+        "phase": 1
+    },
+    {
+        "id": 3,
+        "name": "Decompose into Subproblems",
+        "phase": 1
+    },
+    {
+        "id": 4,
+        "name": "Recognize Problem Pattern",
+        "phase": 1
+    },
+    {
+        "id": 5,
+        "name": "Define Solution Scope",
+        "phase": 1
+    },
+    {
+        "id": 6,
+        "name": "Isolate Variables",
+        "phase": 1
+    },
+    {
+        "id": 7,
+        "name": "Clarify Ambiguities",
+        "phase": 1
+    },
+    {
+        "id": 8,
+        "name": "Translate Text to Math",
+        "phase": 2
+    },
+    {
+        "id": 9,
+        "name": "Translate Math to Code",
+        "phase": 2
+    },
+    {
+        "id": 10,
+        "name": "Construct Geometric Representation",
+        "phase": 2
+    },
+    {
+        "id": 11,
+        "name": "Formulate Algebraic Equation",
+        "phase": 2
+    },
+    {
+        "id": 12,
+        "name": "Create Logical Proposition",
+        "phase": 2
+    },
+    {
+        "id": 13,
+        "name": "Define Data Structure",
+        "phase": 2
+    },
+    {
+        "id": 14,
+        "name": "Map to Design Pattern",
+        "phase": 2
+    },
+    {
+        "id": 15,
+        "name": "Abstract Concrete to Variable",
+        "phase": 2
+    },
+    {
+        "id": 16,
+        "name": "Apply Arithmetic Simplification",
+        "phase": 3
+    },
+    {
+        "id": 17,
+        "name": "Apply Modulo Arithmetic",
+        "phase": 3
+    },
+    {
+        "id": 18,
+        "name": "Perform Algebraic Substitution",
+        "phase": 3
+    },
+    {
+        "id": 19,
+        "name": "Factor Polynomial/Expression",
+        "phase": 3
+    },
+    {
+        "id": 20,
+        "name": "Execute Differentiation/Integration",
+        "phase": 3
+    },
+    {
+        "id": 21,
+        "name": "Solve System of Equations",
+        "phase": 3
+    },
+    {
+        "id": 22,
+        "name": "Apply Trigonometric Identity",
+        "phase": 3
+    },
+    {
+        "id": 23,
+        "name": "Compute Probability/Combinatorics",
+        "phase": 3
+    },
+    {
+        "id": 24,
+        "name": "Initialize State/Variables",
+        "phase": 4
+    },
+    {
+        "id": 25,
+        "name": "Define Base Case",
+        "phase": 4
+    },
+    {
+        "id": 26,
+        "name": "Define Recursive Step",
+        "phase": 4
+    },
+    {
+        "id": 27,
+        "name": "Traverse Structure (Array/Tree)",
+        "phase": 4
+    },
+    {
+        "id": 28,
+        "name": "Apply Bitwise Operation",
+        "phase": 4
+    },
+    {
+        "id": 29,
+        "name": "Optimize Complexity",
+        "phase": 4
+    },
+    {
+        "id": 30,
+        "name": "Manage Memory/State",
+        "phase": 4
+    },
+    {
+        "id": 31,
+        "name": "Handle Edge Cases",
+        "phase": 4
+    },
+    {
+        "id": 32,
+        "name": "Apply Modus Ponens/Tollens",
+        "phase": 5
+    },
+    {
+        "id": 33,
+        "name": "Derive Contradiction",
+        "phase": 5
+    },
+    {
+        "id": 34,
+        "name": "Generalize by Induction",
+        "phase": 5
+    },
+    {
+        "id": 35,
+        "name": "Apply Case Analysis",
+        "phase": 5
+    },
+    {
+        "id": 36,
+        "name": "Deduce Implications",
+        "phase": 5
+    },
+    {
+        "id": 37,
+        "name": "Identify Counterexample",
+        "phase": 5
+    },
+    {
+        "id": 38,
+        "name": "Check Logical Consistency",
+        "phase": 5
+    },
+    {
+        "id": 39,
+        "name": "Perform Syllogistic Reasoning",
+        "phase": 5
+    },
+    {
+        "id": 40,
+        "name": "Forward Chaining",
+        "phase": 6
+    },
+    {
+        "id": 41,
+        "name": "Backward Chaining",
+        "phase": 6
+    },
+    {
+        "id": 42,
+        "name": "Backtrack (Undo Step)",
+        "phase": 6
+    },
+    {
+        "id": 43,
+        "name": "Branch and Bound",
+        "phase": 6
+    },
+    {
+        "id": 44,
+        "name": "Prune Search Space",
+        "phase": 6
+    },
+    {
+        "id": 45,
+        "name": "Apply Heuristic Guess",
+        "phase": 6
+    },
+    {
+        "id": 46,
+        "name": "Relax Constraints",
+        "phase": 6
+    },
+    {
+        "id": 47,
+        "name": "Formulate Analogy",
+        "phase": 6
+    },
+    {
+        "id": 48,
+        "name": "Check Dimensional/Unit Consistency",
+        "phase": 7
+    },
+    {
+        "id": 49,
+        "name": "Verify Base Case",
+        "phase": 7
+    },
+    {
+        "id": 50,
+        "name": "Execute Dry-Run/Trace",
+        "phase": 7
+    },
+    {
+        "id": 51,
+        "name": "Estimate Order of Magnitude",
+        "phase": 7
+    },
+    {
+        "id": 52,
+        "name": "Validate Constraints",
+        "phase": 7
+    },
+    {
+        "id": 53,
+        "name": "Compare with Expected Output",
+        "phase": 7
+    },
+    {
+        "id": 54,
+        "name": "Identify Error/Bug Location",
+        "phase": 7
+    },
+    {
+        "id": 55,
+        "name": "Resolve Type Mismatch",
+        "phase": 7
+    },
+    {
+        "id": 56,
+        "name": "Combine Subproblem Results",
+        "phase": 8
+    },
+    {
+        "id": 57,
+        "name": "Format Mathematical Proof",
+        "phase": 8
+    },
+    {
+        "id": 58,
+        "name": "Format Code Output",
+        "phase": 8
+    },
+    {
+        "id": 59,
+        "name": "Summarize Conclusion",
+        "phase": 8
+    },
+    {
+        "id": 60,
+        "name": "Annotate Steps/Comments",
+        "phase": 8
+    },
+    {
+        "id": 61,
+        "name": "Refactor/Simplify Solution",
+        "phase": 8
+    },
+    {
+        "id": 62,
+        "name": "Optimize Logic Flow",
+        "phase": 8
+    },
+    {
+        "id": 63,
+        "name": "Finalize Answer Extraction",
+        "phase": 8
+    }
+]
