@@ -6,12 +6,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torch.utils.data import DataLoader, TensorDataset
+from torch.utils.data import DataLoader, TensorDataset, Dataset
 
 import sys
 import os
-
-# Kaggle workaround: if src doesn't exist, clone the repo
+import json
 if not os.path.exists("src/models/pipeline.py") and not os.path.exists("/kaggle/working/src"):
     print("Cloning GitHub repository to fetch source code...")
     os.system("git clone https://github.com/uwu4746573-dot/nellm.git /tmp/nellm")
@@ -20,6 +19,37 @@ else:
     sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from src.models.pipeline import NeLLMReasoningPipeline
+
+class MathDataset(Dataset):
+    """Dataset loading problems and target T-rules."""
+    def __init__(self, json_path: str, d_v: int = 2048):
+        with open(json_path, 'r', encoding='utf-8') as f:
+            self.data = json.load(f)
+        self.d_v = d_v
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        item = self.data[idx]
+        problem_text = item['problem']
+        t_rules = item.get('extracted_t_rules', [])
+
+        # Convert T-rules into a multi-hot float vector of size D_v
+        # Using hash for simplicity to map strings to indices
+        target_v_t = torch.zeros(self.d_v)
+        if t_rules:
+            for rule in t_rules:
+                # Deterministic hash to keep index consistent
+                rule_idx = hash(rule) % self.d_v
+                target_v_t[rule_idx] = 1.0
+
+        # Dummy target values for other losses to keep the training loop working
+        target_f_new = torch.randn(self.d_v)
+        target_halt = torch.randint(0, 2, (1,)).float()
+
+        return problem_text, target_v_t, target_f_new, target_halt
+
 
 class NeLLMTrainingWrapper(nn.Module):
     """
@@ -31,10 +61,10 @@ class NeLLMTrainingWrapper(nn.Module):
         super().__init__()
         self.pipeline = pipeline
 
-    def forward(self, hidden_states: torch.Tensor):
-        # 1. Encode cached hidden states into reasoning space
-        # hidden_states: [B, SeqLen, D_model] -> f_1: [B, D_v]
-        f_1 = self.pipeline.encoder(hidden_states)
+    def forward(self, problem_text):
+        # 1. Encode raw text into reasoning space
+        # problem_text: list/tuple of strings -> f_1: [B, D_v]
+        f_1 = self.pipeline.encoder(problem_text)
         
         # 2. Find relevant transformation rule
         # router returns soft Gumbel-Softmax weights [B, D_v]
@@ -82,32 +112,24 @@ class NTXentLoss(nn.Module):
 
 def main():
     # --- Configuration ---
-    B = 32           # Batch size
-    SeqLen = 128     # Context length of cached hidden states
+    B = 2            # Batch size
     D_model = 4096   # Original LLM dimension
     D_v = 2048       # Latent reasoning dimension
-    Epochs = 300     # Increased to run for ~10 minutes
+    Epochs = 5       # 5 epochs on 2000 samples = ~5-10 minutes
     LearningRate = 1e-4
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device}")
 
-    # --- Dummy Data Generation ---
-    print("Generating dummy cached data...")
-    # X: cached hidden states (no LLM backbone needed!)
-    cached_hidden_states = torch.randn(B, SeqLen, D_model)
+    # --- Dataset Setup ---
+    data_path = os.path.join(os.path.dirname(__file__), "data", "processed_math.json")
+    print(f"Loading dataset from {data_path}...")
+    full_dataset = MathDataset(data_path, d_v=D_v)
     
-    # Y1: Target T-rules for router
-    target_v_t = torch.randn(B, D_v)
-    
-    # Y2: Target valid latent states for contrastive loss
-    target_f_new = torch.randn(B, D_v)
-    
-    # Y3: Target halt probabilities for critic (0 or 1)
-    target_halt = torch.randint(0, 2, (B, 1)).float()
-    
-    dataset = TensorDataset(cached_hidden_states, target_v_t, target_f_new, target_halt)
-    dataloader = DataLoader(dataset, batch_size=8, shuffle=True)
+    # Subset to 2000 examples for a fast ~5-10 minute test run
+    subset_indices = list(range(min(2000, len(full_dataset))))
+    dataset = torch.utils.data.Subset(full_dataset, subset_indices)
+    dataloader = DataLoader(dataset, batch_size=B, shuffle=True)
 
     # --- Model Setup ---
     pipeline = NeLLMReasoningPipeline(d_model=D_model, d_v=D_v)
@@ -139,9 +161,8 @@ def main():
     for epoch in range(Epochs):
         total_epoch_loss = 0.0
         
-        for batch_idx, (x, tgt_v_t, tgt_f_new, tgt_halt) in enumerate(dataloader):
+        for batch_idx, (x_text, tgt_v_t, tgt_f_new, tgt_halt) in enumerate(dataloader):
             # Move to device
-            x = x.to(device)
             tgt_v_t = tgt_v_t.to(device)
             tgt_f_new = tgt_f_new.to(device)
             tgt_halt = tgt_halt.to(device)
@@ -149,7 +170,8 @@ def main():
             optimizer.zero_grad()
             
             # Forward pass (automatically utilizes multiple GPUs if DataParallel is used)
-            v_t, f_new, halt_logit = model(x)
+            # x_text is a list/tuple of strings
+            v_t, f_new, halt_logit = model(x_text)
             
             # Compute individual losses
             loss_router = criterion_router(v_t, tgt_v_t)
