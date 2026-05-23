@@ -122,7 +122,11 @@ def main():
     print(f"Using device: {device}")
 
     # --- Dataset Setup ---
-    data_path = os.path.join(os.path.dirname(__file__), "data", "processed_math.json")
+    if os.path.exists('/kaggle'):
+        base_dir = '/tmp/nellm'
+    else:
+        base_dir = os.path.dirname(__file__)
+    data_path = os.path.join(base_dir, "data", "processed_math.json")
     print(f"Loading dataset from {data_path}...")
     full_dataset = MathDataset(data_path, d_v=D_v)
     

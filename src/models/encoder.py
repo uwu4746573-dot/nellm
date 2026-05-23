@@ -30,7 +30,7 @@ class LatentEncoderLayer(nn.Module):
             f_1 tensor of shape [B, D_v]
         """
         # Determine the device of the module
-        device = next(self.parameters()).device
+        device = self.projection.weight.device
 
         if isinstance(inputs, str):
             inputs = [inputs]
