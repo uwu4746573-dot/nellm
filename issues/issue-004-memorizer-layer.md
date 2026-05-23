@@ -1,4 +1,4 @@
-# Issue 4: Implement MemorizerLayer
+# [Resolved] Issue 4: Implement MemorizerLayer
 
 **Component:** `MemorizerLayer`
 **Objective:** Implement the layer to generate shortcut transformation keys and values from successful reasoning paths.
@@ -11,7 +11,7 @@
 * **Output:** `V_T_new` `[B, D_v]`, `K_T_new` `[B, D_k]`.
 
 ## Tasks
-- [ ] Create `MemorizerLayer` `nn.Module`.
-- [ ] Implement the `MLP_reasoning` abstraction network (e.g. `Linear(2 * D_v, Hidden) -> ... -> Linear(Hidden, D_v)`).
-- [ ] Implement the key projection layer.
-- [ ] Add unit tests verifying concat dimensions and output shapes.
+- [x] Create `MemorizerLayer` `nn.Module`.
+- [x] Implement the `MLP_reasoning` abstraction network (e.g. `Linear(2 * D_v, Hidden) -> ... -> Linear(Hidden, D_v)`).
+- [x] Implement the key projection layer.
+- [x] Add unit tests verifying concat dimensions and output shapes.

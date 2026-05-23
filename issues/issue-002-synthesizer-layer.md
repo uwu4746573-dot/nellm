@@ -1,4 +1,4 @@
-# Issue 2: Implement SynthesizerLayer
+# [Resolved] Issue 2: Implement SynthesizerLayer
 
 **Component:** `SynthesizerLayer`
 **Objective:** Implement the layer that modulates facts with transformations (AdaLN) and generates new facts using a Mixture of Experts (MoE).
