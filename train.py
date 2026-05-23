@@ -115,7 +115,7 @@ def main():
     B = 2            # Batch size
     D_model = 4096   # Original LLM dimension
     D_v = 2048       # Latent reasoning dimension
-    Epochs = 300     # Increased to run for ~10 minutes
+    Epochs = 5       # 5 epochs on 2000 samples = ~5-10 minutes
     LearningRate = 1e-4
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -124,7 +124,11 @@ def main():
     # --- Dataset Setup ---
     data_path = os.path.join(os.path.dirname(__file__), "data", "processed_math.json")
     print(f"Loading dataset from {data_path}...")
-    dataset = MathDataset(data_path, d_v=D_v)
+    full_dataset = MathDataset(data_path, d_v=D_v)
+    
+    # Subset to 2000 examples for a fast ~5-10 minute test run
+    subset_indices = list(range(min(2000, len(full_dataset))))
+    dataset = torch.utils.data.Subset(full_dataset, subset_indices)
     dataloader = DataLoader(dataset, batch_size=B, shuffle=True)
 
     # --- Model Setup ---
