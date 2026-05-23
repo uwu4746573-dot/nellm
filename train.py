@@ -182,7 +182,8 @@ def main():
                 return_tensors="pt"
             )
             # Forward pass (automatically utilizes multiple GPUs if DataParallel is used)
-            v_t, f_new, halt_logit = model(inputs)
+            # We MUST convert BatchEncoding to a raw dict, otherwise DataParallel won't scatter it!
+            v_t, f_new, halt_logit = model(dict(inputs))
             
             # Compute individual losses
             loss_router = criterion_router(v_t, tgt_v_t)
