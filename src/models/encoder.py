@@ -1,51 +1,75 @@
 import torch
 import torch.nn as nn
+from typing import Union, List, Dict
+from transformers import AutoModel, AutoTokenizer
 
 class LatentEncoderLayer(nn.Module):
     """
-    Latent Encoder Layer using Latent Attention Pooling.
-    Compresses raw LLM hidden states into a latent reasoning fact vector.
+    Latent Encoder Layer using an LLM encoder.
+    Compresses raw text into a latent reasoning fact vector.
     """
-    def __init__(self, d_model: int = 4096, num_latents: int = 512, d_v: int = 2048, num_heads: int = 8):
+    def __init__(self, model_name: str = "Alibaba-NLP/gte-Qwen2-1.5B-instruct", d_model: int = 1536, d_v: int = 2048, pooling: str = "last_token"):
         super().__init__()
         self.d_model = d_model
-        self.num_latents = num_latents
         self.d_v = d_v
+        self.pooling = pooling
         
-        # Learnable latent queries
-        self.latent_queries = nn.Parameter(torch.randn(num_latents, d_model))
-        
-        # Cross-attention layer
-        self.cross_attention = nn.MultiheadAttention(embed_dim=d_model, num_heads=num_heads, batch_first=True)
+        # Load real tokenizer and model
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.encoder = AutoModel.from_pretrained(model_name)
         
         # Linear projection to latent reasoning space
         self.projection = nn.Linear(d_model, d_v)
 
-    def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:
+    def forward(self, inputs: Union[str, List[str], Dict[str, torch.Tensor]]) -> torch.Tensor:
         """
         Args:
-            hidden_states: Tensor of shape [B, SeqLen, D_model]
+            inputs: Raw string text, list of strings, or dictionary with tokenized input IDs (input_ids, attention_mask).
         
         Returns:
-            F_1 tensor of shape [B, D_v]
+            f_1 tensor of shape [B, D_v]
         """
-        B, seq_len, d_m = hidden_states.shape
-        assert d_m == self.d_model, f"Expected hidden_states with last dim {self.d_model}, got {d_m}"
+        # Determine the device of the module
+        device = next(self.parameters()).device
+
+        if isinstance(inputs, str):
+            inputs = [inputs]
+
+        if isinstance(inputs, list):
+            # Tokenize raw string
+            inputs = self.tokenizer(
+                inputs, 
+                padding=True, 
+                truncation=True, 
+                return_tensors="pt"
+            ).to(device)
+        elif isinstance(inputs, dict):
+            # Move dict inputs to device
+            inputs = {k: v.to(device) for k, v in inputs.items()}
+        else:
+            raise ValueError("Unsupported input type. Please provide string, list of strings, or tokenized dictionary.")
+            
+        # Pass through the Qwen2 encoder
+        outputs = self.encoder(**inputs)
         
-        # Expand latent queries for the batch
-        # [B, num_latents, D_model]
-        queries = self.latent_queries.unsqueeze(0).expand(B, -1, -1)
+        # Take the last hidden state of shape [B, SeqLen, D_model]
+        last_hidden_state = outputs.last_hidden_state
+        attention_mask = inputs["attention_mask"]
         
-        # Cross-attention: queries attend to hidden_states (keys/values)
-        # attn_output shape: [B, num_latents, D_model]
-        attn_output, _ = self.cross_attention(query=queries, key=hidden_states, value=hidden_states)
-        
-        # Mean pooling over the num_latents dimension
-        # pooled_output shape: [B, D_model]
-        pooled_output = attn_output.mean(dim=1)
+        if self.pooling == "last_token":
+            # Extract the last token (often the EOS token) for causal LMs like Qwen2
+            sequence_lengths = attention_mask.sum(dim=1) - 1
+            batch_size = last_hidden_state.shape[0]
+            pooled_output = last_hidden_state[torch.arange(batch_size, device=device), sequence_lengths]
+        elif self.pooling == "mean":
+            # Perform mean pooling
+            input_mask_expanded = attention_mask.unsqueeze(-1).expand(last_hidden_state.size()).float()
+            pooled_output = torch.sum(last_hidden_state * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)
+        else:
+            raise ValueError(f"Unknown pooling strategy: {self.pooling}")
         
         # Project to D_v
-        # out shape: [B, D_v]
-        out = self.projection(pooled_output)
+        # f_1 shape: [B, D_v]
+        f_1 = self.projection(pooled_output)
         
-        return out
+        return f_1

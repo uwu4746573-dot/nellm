@@ -1,0 +1,18 @@
+[{"stream_name":"stdout","time":8.057553317,"data":"Cloning GitHub repository to fetch source code...\n"}
+,{"stream_name":"stderr","time":8.117124327,"data":"Cloning into '/tmp/nellm'...\n"}
+,{"stream_name":"stdout","time":9.047699828,"data":"Using device: cuda\n"}
+,{"stream_name":"stdout","time":9.047761989,"data":"Generating dummy cached data...\n"}
+,{"stream_name":"stdout","time":14.147135889,"data":"Wrapping model in DataParallel for 2 GPUs.\n"}
+,{"stream_name":"stdout","time":19.808653705,"data":"Starting training...\n"}
+,{"stream_name":"stdout","time":22.713872144,"data":"Epoch [1/1] Batch [1/4] Loss: 3.8293 (Router: 0.9929, Contrastive: 2.1398, Critic: 0.6966)\n"}
+,{"stream_name":"stdout","time":23.422550939,"data":"Epoch [1/1] Batch [2/4] Loss: 3.8620 (Router: 1.0027, Contrastive: 2.1680, Critic: 0.6913)\n"}
+,{"stream_name":"stdout","time":24.125324264,"data":"Epoch [1/1] Batch [3/4] Loss: 3.7355 (Router: 1.0003, Contrastive: 2.0374, Critic: 0.6978)\n"}
+,{"stream_name":"stdout","time":24.829052286,"data":"Epoch [1/1] Batch [4/4] Loss: 3.7583 (Router: 0.9958, Contrastive: 2.0695, Critic: 0.6930)\n"}
+,{"stream_name":"stdout","time":24.829208322,"data":"Epoch 1 completed. Average Loss: 3.7963\n"}
+,{"stream_name":"stderr","time":29.866096395,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":29.866142616,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":30.153210246,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":30.153240753,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":30.867091295,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":32.414586619,"data":"[NbConvertApp] Writing 298790 bytes to __results__.html\n"}
+]
