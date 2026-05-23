@@ -34,6 +34,8 @@ class LatentEncoderLayer(nn.Module):
 
         if isinstance(inputs, str):
             inputs = [inputs]
+        elif isinstance(inputs, tuple):
+            inputs = list(inputs)
 
         if isinstance(inputs, list):
             # Tokenize raw string
