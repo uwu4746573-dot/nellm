@@ -1,6 +1,6 @@
 {
-  "id": "uwu4746573/nellm-latent-reasoning-train",
-  "title": "NeLL-M Latent Reasoning Training",
+  "id": "uwu4746573/nellm-latent-reasoning-v2",
+  "title": "nellm-latent-reasoning-v2",
   "code_file": "train.py",
   "language": "python",
   "kernel_type": "script",

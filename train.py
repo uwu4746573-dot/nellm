@@ -10,7 +10,14 @@ from torch.utils.data import DataLoader, TensorDataset
 
 import sys
 import os
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Kaggle workaround: if src doesn't exist, clone the repo
+if not os.path.exists("src/models/pipeline.py") and not os.path.exists("/kaggle/working/src"):
+    print("Cloning GitHub repository to fetch source code...")
+    os.system("git clone https://github.com/uwu4746573-dot/nellm.git /tmp/nellm")
+    sys.path.append("/tmp/nellm")
+else:
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from src.models.pipeline import NeLLMReasoningPipeline
 
