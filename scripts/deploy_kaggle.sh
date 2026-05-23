@@ -12,8 +12,8 @@ cp /Users/uchebnick/projects/secretcase/repo/nellm/train.py "$DIR/"
 
 cat << 'JSON' > "$DIR/kernel-metadata.json"
 {
-  "id": "uwu4746573/nellm-latent-reasoning-v9",
-  "title": "nellm-latent-reasoning-v9",
+  "id": "uwu4746573/nellm-latent-reasoning-v10",
+  "title": "nellm-latent-reasoning-v10",
   "code_file": "train.py",
   "language": "python",
   "kernel_type": "script",

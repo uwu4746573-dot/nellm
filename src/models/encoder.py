@@ -8,9 +8,8 @@ class LatentEncoderLayer(nn.Module):
     Latent Encoder Layer using an LLM encoder.
     Compresses raw text into a latent reasoning fact vector.
     """
-    def __init__(self, model_name: str = "Alibaba-NLP/gte-Qwen2-1.5B-instruct", d_model: int = 1536, d_v: int = 2048, pooling: str = "last_token"):
+    def __init__(self, model_name: str = "Alibaba-NLP/gte-Qwen2-1.5B-instruct", d_v: int = 2048, pooling: str = "last_token", **kwargs):
         super().__init__()
-        self.d_model = d_model
         self.d_v = d_v
         self.pooling = pooling
         
@@ -19,7 +18,9 @@ class LatentEncoderLayer(nn.Module):
         self.encoder = AutoModel.from_pretrained(model_name)
         
         # Linear projection to latent reasoning space
-        self.projection = nn.Linear(d_model, d_v)
+        # Fetch hidden size directly from the encoder config (e.g. 1536 for Qwen2-1.5B)
+        d_internal = self.encoder.config.hidden_size
+        self.projection = nn.Linear(d_internal, d_v)
 
     def forward(self, inputs: Union[str, List[str], Dict[str, torch.Tensor]]) -> torch.Tensor:
         """
