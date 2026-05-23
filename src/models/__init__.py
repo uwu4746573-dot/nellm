@@ -15,6 +15,8 @@ from .router import LatentRouterLayer
 from .synthesizer import SynthesizerLayer, AdaLN, MoE, ExpertMLP, Top2Gating
 from .critic import CriticLayer
 from .memorizer import MemorizerLayer
+from .decoder import LatentDecoderLayer
+from .pipeline import NeLLMReasoningPipeline
 
 __all__ = [
     "LatentRouterLayer",
@@ -25,4 +27,6 @@ __all__ = [
     "Top2Gating",
     "CriticLayer",
     "MemorizerLayer",
+    "LatentDecoderLayer",
+    "NeLLMReasoningPipeline",
 ]

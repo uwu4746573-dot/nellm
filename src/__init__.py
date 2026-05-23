@@ -6,6 +6,8 @@ from .models import (
     SynthesizerLayer,
     CriticLayer,
     MemorizerLayer,
+    LatentDecoderLayer,
+    NeLLMReasoningPipeline,
 )
 
 __all__ = [
@@ -13,4 +15,6 @@ __all__ = [
     "SynthesizerLayer",
     "CriticLayer",
     "MemorizerLayer",
+    "LatentDecoderLayer",
+    "NeLLMReasoningPipeline",
 ]
